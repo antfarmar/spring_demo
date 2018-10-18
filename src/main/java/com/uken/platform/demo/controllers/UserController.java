@@ -5,6 +5,7 @@ import com.uken.platform.demo.models.User;
 import com.uken.platform.demo.repositories.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -32,17 +33,17 @@ public class UserController {
   )
   @ApiOperation(value = "getUser", notes = "gets and existing user")
   public User getUser(@PathVariable String userId) throws UserNotFound {
-    User user = userRepository.findOne(userId);
+    Optional<User> user = userRepository.findById(userId);
 
-    if (user == null) throw new UserNotFound("User '" + userId + "' could not be found");
+    if (!user.isPresent()) throw new UserNotFound("User '" + userId + "' could not be found");
 
-    return user;
+    return user.get();
   }
 
   @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
   @ApiOperation(value = "deleteUser", notes = "deletes a user")
   public String deleteUser(@PathVariable String userId) {
-    userRepository.delete(userId);
+    userRepository.deleteById(userId);
 
     return "OK";
   }

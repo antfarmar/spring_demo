@@ -5,7 +5,7 @@ spring:
     url: jdbc:mysql://localhost:3306/demo?serverTimezone=UTC
     username: root
     password: ""
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     tomcat:
       test-on-borrow: true
       validationQuery: SELECT 1
@@ -22,20 +22,20 @@ spring:
       format_sql: true
       ddl-auto: validate
 
-flyway.enabled: false  # prevent migrations on application server startup
+  flyway.enabled: false  # prevent migrations on application server startup
+
+  #disabled security for actuator
+  management.security.enabled: false
 
 uken:
   hello_response: 'Hello Uken!'
-  dogstatsd:
-    prefix: demo
-    host: localhost
-    port: 8125
+  metrics:
+    prefix: spring_demo
     tags:
-      - 'env:dev'
-      - 'key:value'
-
-#disabled security for actuator
-management.security.enabled: false
+      - key: env
+        value: staging
+      - key: app
+        value: spring_demo
 
 # everything above is default configuration for every profile
 
@@ -52,4 +52,4 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-flyway.enabled: false
+  flyway.enabled: false
