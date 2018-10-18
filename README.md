@@ -29,6 +29,23 @@ If you are rebuilding your application and need a new docker image made, then ru
 
 This will start the application, spin up a database and redis instance, run migrations, and start the web server. Once it's all up you should be able to visit [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html). See some `curl` examples below if you're inclined to run the code in this project.
 
+## Database Failover
+
+The MySQL JDBC driver doesn't have support to handle AWS Aurora failover properly, so we should use the MariaDB driver instead.
+
+Documentation is here: https://mariadb.com/kb/en/library/failover-and-high-availability-with-mariadb-connector-j/
+
+The database settings should look like this:
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql:aurora://<aurora-cluster-endpoint>:3306/<database>?usePipelineAuth=false
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      data-source-properties:
+        usePipelineAuth: "false" # this option is not compatible with aurora and it's true by default
+```
 
 ## Database Migrations
 
