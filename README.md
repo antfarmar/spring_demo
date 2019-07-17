@@ -1,4 +1,4 @@
-# Spring Demo
+# Spring Demo (dmo)
 
 This application is intended to demonstrate some common components and practices that Uken's Platform Team employ when developing applications. Some features shown here are:
 - Our common parent POM including:
